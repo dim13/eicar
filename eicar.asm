@@ -1,32 +1,33 @@
 BITS 16
 org 100h
 
-	pop ax		; ax=0x0
-	xor ax,0x214f   ; ax=0x214f
-	push ax
-	and ax, 0x4000 + ziel	; ax=0x0140
-	push ax
-	pop bx		; bx=0x0140 ( Adresse von ziel: )
-	xor al,0x5c	; ax=0x11c
-	push ax
-	pop dx		; dx=0x11c ( Das ist die Adresse des Strings )
-	pop ax		; ax=0x214f
-	xor ax,0x2834	; ax=0x97b ( ah=9 Dosfunktion zur Stringausgabe )
-	push ax
-	pop si		; si=0x97b ( "Schlüssel" )
-; Hier wird der Code an der Stelle ziel: geändert
-	sub [bx],si
-	inc bx
-	inc bx
-	sub [bx],si
+	pop	ax			; ax=0x0
+	xor	ax, 0x214f		; ax=0x214f
+	push	ax
+	and	ax, 0x4000 + print	; ax=0x0140
+	push	ax
+	pop	bx			; bx=0x0140 ( print address )
 
-	jnl ziel
+	xor	al, 0x5c		; ax=0x011c
+	push	ax
+	pop	dx			; dx=0x011c ( string address )
 
-; Adresse: 011Ch
+	pop	ax			; ax=0x214f
+	xor	ax, 0x2834		; ax=0x097b ( ah=9 int 21h )
+	push	ax
+	pop	si			; si=0x097b ( encryption "key" )
+	sub	[bx],si			; changes bytes at 140-141
+
+	inc	bx
+	inc	bx
+	sub	[bx],si			; changes bytes at 142-143
+
+	jnl	print			; jump over data
+
+; address 011ch
 DB "EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$"
 
-ziel:
-
-; Das ist der verschlüsselte Code ( +0x97b-Verschlüsselung )
-DW 0x2b48	; int 0x21
-DW 0x2a48	; int 0x20
+print:
+		; obfuscated code ( 0x097b - encoding ) address 0140h
+DW 0x2b48	; int 21h ah=9 print string ending in '$'
+DW 0x2a48	; int 20h program terminate program terminate
