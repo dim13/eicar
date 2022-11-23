@@ -1,5 +1,6 @@
 BITS 16
-org 100h
+
+	org	100h
 
 	pop	ax			; ax=0x0
 	xor	ax, 0x214f		; ax=0x214f
@@ -24,10 +25,10 @@ org 100h
 
 	jnl	print			; jump over data
 
-; address 011ch
-DB "EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$"
+	; address 011ch
+	db	"EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$"
 
 print:
-		; obfuscated code ( 0x097b - encoding ) address 0140h
-DW 0x2b48	; int 21h ah=9 print string ending in '$'
-DW 0x2a48	; int 20h program terminate program terminate
+	; obfuscated code ( 0x097b - encoding ) address 0140h
+	dw	0x2b48	; int 21h ah=9 print string ending in '$'
+	dw	0x2a48	; int 20h program terminate program terminate
