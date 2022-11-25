@@ -1,4 +1,4 @@
-BITS 16
+bits 16
 
 	org	100h
 
