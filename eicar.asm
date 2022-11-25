@@ -31,4 +31,4 @@ bits 16
 print:
 	; obfuscated code ( 0x097b - encoding ) address 0140h
 	dw	2B48h	; int 21h ah=9 print string ending in '$'
-	dw	2A48h	; int 20h program terminate program terminate
+	dw	2A48h	; int 20h program terminate
